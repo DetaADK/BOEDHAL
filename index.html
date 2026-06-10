@@ -1,0 +1,2190 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="gambar/logo1.png" sizes="512x512" />
+    <title>Boedhal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              green: { dark: "#0A4D3C", mid: "#0F6E56" },
+              yellow: { brutal: "#F5C800", warm: "#EF9F27" },
+              surface: { light: "#F2FAF6" },
+              red: { brutal: "#E24B4A" },
+              black: { brutal: "#0A0A0A" },
+            },
+            fontFamily: {
+              display: ["Bebas Neue", "sans-serif"],
+              body: ["Space Grotesk", "sans-serif"],
+              mono: ["IBM Plex Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --green-dark: #0a4d3c;
+        --green-mid: #0f6e56;
+        --yellow: #f5c800;
+        --yellow-warm: #ef9f27;
+        --surface: #f2faf6;
+        --red: #e24b4a;
+        --black: #0a0a0a;
+        --white: #fafafa;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--surface);
+        font-family: "Space Grotesk", sans-serif;
+        color: var(--black);
+        overflow-x: hidden;
+      }
+
+      /* ─── BRUTAL SHADOW UTILITY ─── */
+      .shadow-brutal {
+        box-shadow: 5px 5px 0 var(--black);
+      }
+      .shadow-brutal-lg {
+        box-shadow: 8px 8px 0 var(--black);
+      }
+      .shadow-brutal-green {
+        box-shadow: 6px 6px 0 var(--green-dark);
+      }
+      .shadow-brutal-yellow {
+        box-shadow: 6px 6px 0 var(--yellow);
+      }
+      .shadow-brutal-red {
+        box-shadow: 6px 6px 0 var(--red);
+      }
+
+      /* ─── BORDER UTILITY ─── */
+      .border-brutal {
+        border: 3px solid var(--black);
+      }
+      .border-brutal-thick {
+        border: 4px solid var(--black);
+      }
+
+      /* ─── HOVER TRANSITIONS ─── */
+      .btn-brutal {
+        border: 3px solid var(--black);
+        box-shadow: 5px 5px 0 var(--black);
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s;
+        font-family: "Bebas Neue", sans-serif;
+        letter-spacing: 0.08em;
+      }
+      .btn-brutal:hover {
+        transform: translate(3px, 3px);
+        box-shadow: 2px 2px 0 var(--black);
+      }
+      .btn-brutal:active {
+        transform: translate(5px, 5px);
+        box-shadow: 0 0 0 var(--black);
+      }
+
+      .card-brutal {
+        border: 3px solid var(--black);
+        box-shadow: 6px 6px 0 var(--black);
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+      }
+      .card-brutal:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0 var(--black);
+      }
+
+      /* ─── MARQUEE ─── */
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: marquee 18s linear infinite;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* ─── NAVBAR ─── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background: var(--white);
+        border-bottom: 3px solid var(--black);
+      }
+
+      /* ─── SECTION TITLES ─── */
+      .section-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--green-mid);
+        border: 2px solid var(--green-mid);
+        display: inline-block;
+        padding: 4px 12px;
+        background: white;
+      }
+
+      /* ─── PAIN POINT TAG ─── */
+      .pain-tag {
+        background: var(--green-dark);
+        color: var(--yellow);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 6px 14px;
+        border: 2px solid var(--black);
+        box-shadow: 3px 3px 0 var(--black);
+        display: inline-block;
+      }
+
+      /* ─── SCROLL PROGRESS BAR ─── */
+      #progress-bar {
+        position: fixed;
+        top: 59px;
+        left: 0;
+        height: 4px;
+        background: var(--yellow);
+        z-index: 998;
+        transition: width 0.1s;
+      }
+
+      /* ─── FIGMA EMBED WRAPPER ─── */
+      .figma-wrapper {
+        border: 3px solid var(--black);
+        box-shadow: 8px 8px 0 var(--black);
+        overflow: hidden;
+        background: #e8f0eb;
+      }
+
+      /* ─── ZIGZAG DIVIDER ─── */
+      .zigzag {
+        background:
+          linear-gradient(135deg, var(--black) 25%, transparent 25%) -10px 0,
+          linear-gradient(225deg, var(--black) 25%, transparent 25%) -10px 0,
+          linear-gradient(315deg, var(--black) 25%, transparent 25%),
+          linear-gradient(45deg, var(--black) 25%, transparent 25%);
+        background-size: 20px 20px;
+        background-color: var(--yellow);
+        height: 20px;
+      }
+
+      /* ─── PERSONA CARD ─── */
+      .persona-card {
+        border: 3px solid var(--black);
+        box-shadow: 7px 7px 0 var(--black);
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
+        background: white;
+      }
+      .persona-card:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 11px 11px 0 var(--black);
+      }
+
+      /* ─── ROTATING BADGE ─── */
+      .spin-slow {
+        animation: spin 12s linear infinite;
+      }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ─── MOBILE MENU ─── */
+      #mobile-menu {
+        display: none;
+      }
+      #mobile-menu.open {
+        display: flex;
+      }
+
+      /* ─── TESTING STAT ─── */
+      .stat-number {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 4rem;
+        line-height: 1;
+        color: var(--yellow);
+      }
+
+      /* ─── SECTION BG PATTERNS ─── */
+      .bg-dots {
+        background-image: radial-gradient(
+          circle,
+          #00000015 1px,
+          transparent 1px
+        );
+        background-size: 20px 20px;
+      }
+      .bg-grid {
+        background-image:
+          linear-gradient(#00000010 1px, transparent 1px),
+          linear-gradient(90deg, #00000010 1px, transparent 1px);
+        background-size: 30px 30px;
+      }
+
+      .phone-card {
+        width: 220px;
+        border-radius: 28px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+        user-select: none;
+      }
+
+      .left {
+        left: 0;
+        top: 40px;
+        transform: rotate(-12deg) scale(0.85);
+        z-index: 1;
+      }
+
+      .center {
+        left: 100px;
+        top: 0;
+        transform: rotate(0deg) scale(1);
+        z-index: 3;
+      }
+
+      .right {
+        left: 200px;
+        top: 40px;
+        transform: rotate(12deg) scale(0.85);
+        z-index: 2;
+      }
+      .center {
+        animation: float 4s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-12px) scale(1);
+        }
+      }
+
+      .animate-slide-up {
+        opacity: 0;
+        transform: translateY(2rem);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+
+      .animate-slide-up.animate-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .animate-slide-up.instant-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ══════════════════════════════════════
+     PROGRESS BAR
+════════════════════════════════════════ -->
+    <div id="progress-bar"></div>
+
+    <!-- ══════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════ -->
+    <nav class="px-4 md:px-8">
+      <div class="max-w-7xl mx-auto flex items-center justify-between h-14">
+        <a href="#hero" class="flex items-center gap-3">
+          <img src="gambar/logo1.png" alt="Logo Boedhal" class="h-10 w-auto" />
+          <span class="font-display text-2xl tracking-widest"> BOEDHAL </span>
+        </a>
+        <!-- Desktop Nav -->
+        <ul
+          class="hidden md:flex items-center gap-1 font-mono text-xs font-bold uppercase tracking-wider"
+        >
+          <li>
+            <a
+              href="#empathize"
+              class="px-3 py-1 hover:bg-[#F5C800] hover:text-[#0A4D3C] transition-colors"
+              >Empathize</a
+            >
+          </li>
+          <li>
+            <a
+              href="#define"
+              class="px-3 py-1 hover:bg-[#F5C800] hover:text-[#0A4D3C] transition-colors"
+              >Define</a
+            >
+          </li>
+          <li>
+            <a
+              href="#ideate"
+              class="px-3 py-1 hover:bg-[#F5C800] hover:text-[#0A4D3C] transition-colors"
+              >Ideate</a
+            >
+          </li>
+          <li>
+            <a
+              href="#prototype"
+              class="px-3 py-1 hover:bg-[#F5C800] hover:text-[#0A4D3C] transition-colors"
+              >Prototype</a
+            >
+          </li>
+          <li>
+            <a
+              href="#testing"
+              class="px-3 py-1 hover:bg-[#F5C800] hover:text-[#0A4D3C] transition-colors"
+              >Testing</a
+            >
+          </li>
+          <li>
+            <a
+              href="#creator"
+              class="btn-brutal bg-[#F5C800] text-[#0A4D3C] px-4 py-1 ml-2 text-sm"
+              >Creator</a
+            >
+          </li>
+        </ul>
+        <!-- Mobile Hamburger -->
+        <button
+          id="hamburger"
+          class="md:hidden border-brutal p-1"
+          aria-label="Menu"
+        >
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <rect y="3" width="22" height="3" fill="black" />
+            <rect y="10" width="22" height="3" fill="black" />
+            <rect y="17" width="22" height="3" fill="black" />
+          </svg>
+        </button>
+      </div>
+      <!-- Mobile Menu -->
+      <div
+        id="mobile-menu"
+        class="md:hidden flex-col border-t-2 border-black bg-[#0A4D3C] pb-4"
+      >
+        <a
+          href="#empathize"
+          class="block px-6 py-3 font-mono font-bold uppercase text-sm border-b border-black text-white hover:bg-[#F5C800] hover:text-[#0A4D3C]"
+          onclick="closeMobile()"
+          >Empathize</a
+        >
+        <a
+          href="#define"
+          class="block px-6 py-3 font-mono font-bold uppercase text-sm border-b border-black text-white hover:bg-[#F5C800] hover:text-[#0A4D3C]"
+          onclick="closeMobile()"
+          >Define</a
+        >
+        <a
+          href="#ideate"
+          class="block px-6 py-3 font-mono font-bold uppercase text-sm border-b border-black text-white hover:bg-[#F5C800] hover:text-[#0A4D3C]"
+          onclick="closeMobile()"
+          >Ideate</a
+        >
+        <a
+          href="#prototype"
+          class="block px-6 py-3 font-mono font-bold uppercase text-sm border-b border-black text-white hover:bg-[#F5C800] hover:text-[#0A4D3C]"
+          onclick="closeMobile()"
+          >Prototype</a
+        >
+        <a
+          href="#testing"
+          class="block px-6 py-3 font-mono font-bold uppercase text-sm border-b border-black text-white hover:bg-[#F5C800] hover:text-[#0A4D3C]"
+          onclick="closeMobile()"
+          >Testing</a
+        >
+        <a
+          href="#creator"
+          class="block px-6 py-3 font-mono font-bold uppercase text-sm text-white hover:bg-[#F5C800] hover:text-[#0A4D3C]"
+          onclick="closeMobile()"
+          >Creator</a
+        >
+      </div>
+    </nav>
+    <!-- ══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+    <section
+      id="hero"
+      class="min-h-screen pt-14 bg-[#0f6e56] border-b-4 border-black relative overflow-hidden bg-grid flex items-center"
+    >
+      <!-- Floating geometric shapes -->
+      <div
+        class="absolute top-20 right-10 w-24 h-24 bg-[#F5C800] border-brutal rotate-12 shadow-brutal hidden md:block"
+      ></div>
+      <div
+        class="absolute bottom-32 left-8 w-16 h-16 bg-[#F5C800] border-brutal -rotate-6 shadow-brutal hidden md:block"
+      ></div>
+      <div
+        class="absolute top-40 right-56 w-12 h-12 border-brutal bg-white rotate-45 hidden lg:block"
+      ></div>
+      <div
+        class="abso
+        
+              </div>
+              <div class="card-brutal bg-white p-4">
+                <p class="font-mono text-xs font-bold text-[#0A4D3C] mb-1">
+                  TEMUAN #03
+                </p>
+                <p class="font-body font-semibold">
+                  "Nggak ada info jelas soal biaya sebelum konfirmasi order
+                  kaget waktu bayar ternyata lebih mahal dari ekspektasi."
+                </p>
+                <p class="font-mono text-xs text-gray-600 mt-2">
+                  Pak Hanif, Pekerja Serabutan
+                </p>
+              </div>
+            </div>
+            <!-- Stats Row -->
+            <div class="grid grid-cols-3 gap-3 mt-8">
+              <div
+                class="border-brutal bg-[#0A4D3C] p-3 text-center shadow-brutal"
+              >
+                <p class="font-display text-4xl text-white">3</p>
+                <p class="font-mono text-xs text-[#F2FAF6] mt-1">Responden</p>
+              </div>
+              <div
+                class="border-brutal bg-black p-3 text-center shadow-brutal-yellow"
+              >
+                <p class="font-display text-4xl text-[#F5C800]">5+</p>
+                <p class="font-mono text-xs text-black mt-1">Jam Interview</p>
+              </div>
+              <div
+                class="border-brutal bg-[#F5C800] p-3 text-center shadow-brutal-green"
+              >
+                <p class="font-display text-4xl text-black">24</p>
+                <p class="font-mono text-xs text-black mt-1">Jam Layanan</p>
+              </div>
+            </div>
+          </div>
+          <!-- Right: Figma Embed -->
+          <div>
+            <p
+              class="font-mono text-xs font-bold uppercase tracking-widest text-gray-500 mb-3"
+            >
+              Research Documentation — Figma
+            </p>
+            <div
+              class="bg-[#1e1e2e] relative overflow-hidden rounded-xl border-4 border-black shadow-[8px_8px_0px_#000]"
+              style="height: 500px"
+            >
+              <!-- Header Window -->
+              <div
+                class="absolute top-0 left-0 right-0 bg-[#2c2c3e] h-10 flex items-center px-4 justify-between z-10 border-b border-gray-700"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+
+                  <span class="font-mono text-xs text-gray-400 ml-3">
+                    Empathize Research.fig
+                  </span>
+                </div>
+
+                <span class="font-mono text-xs text-[#F5C800]">
+                  ● Research
+                </span>
+              </div>
+
+              <!-- Figma Embed -->
+              <iframe
+                class="absolute left-0 w-full"
+                style="top: 40px; height: calc(100% - 40px); border: none"
+                src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FwvOB9nhqAOIYyQeCeEIs42%2FUntitled%3Fnode-id%3D0-1%26p%3Df%26t%3DSlelUrrlPCLkDzQU-0"
+                allowfullscreen
+                loading="lazy"
+                title="Boedhal — Figma Research Documentation"
+              ></iframe>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-3">
+              <a
+                href="https://www.figma.com/design/wvOB9nhqAOIYyQeCeEIs42/Untitled?node-id=0-1&p=f&t=SlelUrrlPCLkDzQU-0"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#0A4D3C] text-[#F5C800] px-5 py-2 text-sm inline-block"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <path
+                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                  />
+                  <path
+                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                  />
+                </svg>
+                BUKA DI FIGMA ↗
+              </a>
+              <a
+                href="https://www.figma.com/design/wvOB9nhqAOIYyQeCeEIs42/Untitled?node-id=0-1&p=f&t=SlelUrrlPCLkDzQU-0"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-white text-black px-5 py-2 text-sm inline-block"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <polyline points="15 3 21 3 21 9" />
+                  <polyline points="9 21 3 21 3 15" />
+                  <line x1="21" y1="3" x2="14" y2="10" />
+                  <line x1="3" y1="21" x2="10" y2="14" />
+                </svg>
+                FULLSCREEN
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     02 — DEFINE
+════════════════════════════════════════ -->
+    <section
+      id="define"
+      class="py-20 px-4 md:px-8 bg-[#0A4D3C] border-b-4 border-[#F5C800]"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div
+          class="section-label mb-4"
+          style="border-color: #f5c800; color: #f5c800; background: #0a4d3c"
+        >
+          02 — Define
+        </div>
+        <h2
+          class="font-display text-[clamp(3.5rem,10vw,6rem)] leading-none text-[#F5C800] mb-4"
+        >
+          MASALAHNYA<br />APA SIH?
+        </h2>
+        <p class="font-body text-lg text-gray-300 max-w-2xl mb-12">
+          Dari hasil riset, kami mendefinisikan core problem dengan metode
+          <strong class="text-[#F5C800]">HMW (How Might We)</strong> dan
+          mengidentifikasi pain points utama pengguna layanan pengiriman barang.
+        </p>
+
+        <!-- Problem Statement -->
+        <div
+          class="border-4 border-[#F5C800] bg-[#F5C800] p-6 mb-12 max-w-3xl"
+          style="box-shadow: 8px 8px 0 #0f6e56"
+        >
+          <p class="font-mono text-xs font-bold text-black mb-2">
+            // PROBLEM STATEMENT
+          </p>
+          <p class="font-display text-2xl md:text-3xl text-black leading-tight">
+            "Bagaimana kita bisa membantu pengguna
+            <em>mengirim barang kapan saja dengan cepat dan mudah</em>, tanpa
+            proses yang berulang, dan dengan informasi yang transparan sejak
+            awal?"
+          </p>
+        </div>
+
+        <!-- Pain Points -->
+        <div class="mb-14">
+          <h3 class="font-display text-3xl text-white mb-6 tracking-wider">
+            PAIN POINTS
+          </h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+              Tidak tahu kurir yang tersedia malam hari</span
+            >
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <path d="M12 20h9" />
+                <path
+                  d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"
+                />
+              </svg>
+              Harus isi ulang data alamat setiap kali pesan</span
+            >
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <line x1="12" y1="1" x2="12" y2="23" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+              Biaya pengiriman tidak transparan di awal</span
+            >
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <circle cx="12" cy="13" r="8" />
+                <path d="M12 9v4l2 2" />
+                <path d="M9 3h6" />
+                <path d="M12 3v2" />
+              </svg>
+              Proses pemesanan terlalu banyak langkah</span
+            >
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Tidak ada estimasi waktu tiba yang akurat</span
+            >
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
+                <line x1="8" y1="2" x2="8" y2="18" />
+                <line x1="16" y1="6" x2="16" y2="22" />
+              </svg>
+              Jangkauan wilayah antar kota tidak jelas</span
+            >
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.52 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                />
+              </svg>
+              Susah menghubungi kurir setelah order</span
+            >
+            <span class="pain-tag"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <polyline points="23 4 23 10 17 10" />
+                <polyline points="1 20 1 14 7 14" />
+                <path
+                  d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+                />
+              </svg>
+              Tidak bisa jadwalkan pengiriman di muka</span
+            >
+          </div>
+        </div>
+
+        <!-- User Personas -->
+        <h3 class="font-display text-3xl text-white mb-6 tracking-wider">
+          USER PERSONAS
+        </h3>
+        <div class="grid md:grid-cols-3 gap-6 items-stretch">
+          <!-- Persona 1 — ZIA -->
+          <div
+            class="persona-card flex flex-col"
+            style="border-color: #f5c800; box-shadow: 7px 7px 0 #f5c800"
+          >
+            <div
+              class="bg-[#0A4D3C] p-4"
+              style="border-bottom: 3px solid #f5c800"
+            >
+              <div
+                class="w-14 h-14 rounded-full border-4 border-[#F5C800] bg-[#F5C800] flex items-center justify-center font-display text-3xl mb-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1.4em;
+                    height: 1.4em;
+                  "
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M2 20c0-4 4-7 10-7s10 3 10 7" />
+                </svg>
+              </div>
+              <p class="font-display text-2xl text-white">ZIA</p>
+              <p class="font-mono text-xs text-yellow-200">
+                Mahasiswi, 20 tahun — Pengguna Aktif Transportasi Online
+              </p>
+            </div>
+            <div class="bg-[#0A4D3C] p-4 flex-1">
+              <p class="font-mono text-xs text-[#F5C800] font-bold mb-2">
+                GOALS:
+              </p>
+              <ul class="font-mono text-xs text-gray-300 space-y-1 mb-3">
+                <li>• Mendapatkan transportasi yang cepat dan mudah</li>
+                <li>• Memperoleh layanan yang sesuai dengan harga</li>
+                <li>• Berinteraksi dengan driver yang ramah dan profesional</li>
+              </ul>
+              <p class="font-mono text-xs text-[#EF9F27] font-bold mb-2">
+                FRUSTRATIONS:
+              </p>
+              <ul class="font-mono text-xs text-gray-300 space-y-1">
+                <li>• Driver kurang ramah atau kurang tepat dalam navigasi</li>
+                <li>• Kualitas layanan tidak sesuai ekspektasi</li>
+                <li>• Sulit menghubungi driver setelah pesanan selesai</li>
+                <li>
+                  • Biaya layanan dirasa kurang transparan atau kurang adil
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Persona 2 — FIKKA -->
+          <div
+            class="persona-card flex flex-col"
+            style="border-color: #ef9f27; box-shadow: 7px 7px 0 #ef9f27"
+          >
+            <div
+              class="bg-[#0F6E56] p-4"
+              style="border-bottom: 3px solid #ef9f27"
+            >
+              <div
+                class="w-14 h-14 rounded-full border-4 border-[#EF9F27] bg-[#EF9F27] flex items-center justify-center font-display text-3xl mb-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1.4em;
+                    height: 1.4em;
+                  "
+                >
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M2 20c0-4 4-7 10-7s10 3 10 7" />
+                </svg>
+              </div>
+              <p class="font-display text-2xl text-[#EF9F27]">FIKKA</p>
+              <p class="font-mono text-xs text-gray-300">
+                Mahasiswi, 21 tahun — Pengguna Aktif Layanan Antar
+              </p>
+            </div>
+            <div class="bg-[#0F6E56] p-4 flex-1">
+              <p class="font-mono text-xs text-[#F5C800] font-bold mb-2">
+                GOALS:
+              </p>
+              <ul class="font-mono text-xs text-gray-300 space-y-1 mb-3">
+                <li>• Menghemat waktu untuk aktivitas kuliah dan tugas</li>
+                <li>• Mendapatkan pengantaran yang tepat dan akurat</li>
+                <li>• Memperoleh layanan dengan biaya yang masuk akal</li>
+              </ul>
+              <p class="font-mono text-xs text-[#EF9F27] font-bold mb-2">
+                FRUSTRATIONS:
+              </p>
+              <ul class="font-mono text-xs text-gray-300 space-y-1">
+                <li>• Kurir kesulitan menemukan lokasi kos atau gang kecil</li>
+                <li>• Tarif pengiriman jarak dekat terasa kurang ekonomis</li>
+                <li>• Harus menjelaskan instruksi lokasi berulang kali</li>
+                <li>
+                  • Proses memberikan ulasan setelah pesanan terlalu panjang
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Persona 3 — HANIF -->
+          <div
+            class="persona-card flex flex-col"
+            style="border-color: #e24b4a; box-shadow: 7px 7px 0 #e24b4a"
+          >
+            <div
+              class="bg-[#F5C800] p-4"
+              style="border-bottom: 3px solid #e24b4a"
+            >
+              <div
+                class="w-14 h-14 rounded-full border-4 border-black bg-black flex items-center justify-center font-display text-3xl mb-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1.4em;
+                    height: 1.4em;
+                  "
+                >
+                  <rect x="2" y="7" width="20" height="14" rx="2" />
+                  <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                  <line x1="12" y1="12" x2="12" y2="12" />
+                  <path d="M2 12h20" />
+                </svg>
+              </div>
+              <p class="font-display text-2xl text-black">HANIF</p>
+              <p class="font-mono text-xs text-gray-700">
+                Pegawai, 37 tahun — Mobilitas Tinggi
+              </p>
+            </div>
+            <div class="bg-[#0A4D3C] p-4 flex-1">
+              <p class="font-mono text-xs text-[#F5C800] font-bold mb-2">
+                GOALS:
+              </p>
+              <ul class="font-mono text-xs text-gray-300 space-y-1 mb-3">
+                <li>
+                  • Memesan makanan dengan cepat tanpa mengganggu aktivitas
+                  kerja
+                </li>
+                <li>• Mengirim barang tanpa harus keluar rumah</li>
+                <li>
+                  • Menggunakan aplikasi yang sederhana dan mudah dipahami
+                </li>
+              </ul>
+              <p class="font-mono text-xs text-[#EF9F27] font-bold mb-2">
+                FRUSTRATIONS:
+              </p>
+              <ul class="font-mono text-xs text-gray-300 space-y-1">
+                <li>• Waktu pengantaran makanan terkadang tidak konsisten</li>
+                <li>• Layanan pengiriman jarak jauh belum selalu efisien</li>
+                <li>
+                  • Terlalu banyak langkah saat hanya ingin memesan dengan cepat
+                </li>
+                <li>
+                  • Sulit mendapatkan bantuan prioritas saat kondisi darurat
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     03 — IDEATE
+════════════════════════════════════════ -->
+    <section
+      id="ideate"
+      class="py-20 px-4 md:px-8 bg-[#fafafa] border-b-4 border-black"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div
+          class="section-label mb-4"
+          style="border-color: #0a4d3c; color: #0a4d3c; background: #f5c800"
+        >
+          03 — Ideate
+        </div>
+        <h2
+          class="font-display text-[clamp(3.5rem,10vw,6rem)] leading-none text-black mb-4"
+        >
+          IDE<br />GILA-GILAAN.
+        </h2>
+        <p class="font-body text-lg text-black max-w-2xl mb-12">
+          Dari riset dan pendefinisian masalah, kami mulai brainstorming solusi.
+          Prosesnya mencakup <strong>Crazy 8s</strong>, pemetaan
+          <strong>User Flow</strong>, hingga penyusunan
+          <strong>UI Kit & Design System</strong> yang konsisten.
+        </p>
+
+        <!-- Ideas Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
+          <div
+            class="card-brutal bg-white p-5"
+            style="transform: rotate(-1deg)"
+          >
+            <p class="font-display text-2xl mb-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              ORDER KILAT
+            </p>
+            <p class="font-body text-sm">
+              Pesan pengiriman hanya dalam 3 langkah — pilih alamat, pilih
+              kurir, konfirmasi. Selesai!
+            </p>
+          </div>
+          <div
+            class="card-brutal bg-[#0A4D3C] text-white p-5"
+            style="transform: rotate(1.5deg)"
+          >
+            <p class="font-display text-2xl mb-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              ALAMAT FAVORIT
+            </p>
+            <p class="font-body text-sm">
+              Simpan alamat pengirim & penerima yang sering dipakai. Tidak perlu
+              isi ulang setiap kali.
+            </p>
+          </div>
+          <div
+            class="card-brutal bg-white p-5"
+            style="transform: rotate(-0.5deg)"
+          >
+            <p class="font-display text-2xl mb-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+              RADAR KURIR 24J
+            </p>
+            <p class="font-body text-sm">
+              Tampilkan kurir yang sedang online secara real-time, termasuk
+              tengah malam dan dini hari.
+            </p>
+          </div>
+          <div
+            class="card-brutal bg-[#0F6E56] text-[#F5C800] p-5"
+            style="transform: rotate(1deg)"
+          >
+            <p class="font-display text-2xl mb-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                <line x1="1" y1="10" x2="23" y2="10" />
+              </svg>
+              HARGA TRANSPARAN
+            </p>
+            <p class="font-body text-sm">
+              Estimasi biaya muncul otomatis sebelum konfirmasi order tidak ada
+              kejutan di akhir.
+            </p>
+          </div>
+          <div
+            class="card-brutal bg-white p-5"
+            style="transform: rotate(-2deg)"
+          >
+            <p class="font-display text-2xl mb-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                <line x1="16" y1="2" x2="16" y2="6" />
+                <line x1="8" y1="2" x2="8" y2="6" />
+                <line x1="3" y1="10" x2="21" y2="10" />
+              </svg>
+              JADWAL KIRIM
+            </p>
+            <p class="font-body text-sm">
+              Atur jadwal pengiriman di muka untuk keesokan hari atau jam
+              tertentu sesuai kebutuhan.
+            </p>
+          </div>
+          <div
+            class="card-brutal bg-[#0A4D3C] text-white p-5"
+            style="transform: rotate(0.8deg)"
+          >
+            <p class="font-display text-2xl mb-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <circle cx="12" cy="12" r="10" />
+                <circle cx="12" cy="12" r="4" />
+                <line x1="4.93" y1="4.93" x2="9.17" y2="9.17" />
+                <line x1="14.83" y1="14.83" x2="19.07" y2="19.07" />
+                <line x1="14.83" y1="9.17" x2="19.07" y2="4.93" />
+                <line x1="4.93" y1="19.07" x2="9.17" y2="14.83" />
+              </svg>
+              BANTUAN 24 JAM
+            </p>
+            <p class="font-body text-sm">
+              Live chat dengan CS dan fitur lacak kurir secara langsung bantuan
+              kapan pun diperlukan.
+            </p>
+          </div>
+        </div>
+
+        <!-- ── 3 Figma Sub-sections ── -->
+        <div class="space-y-12">
+          <!-- 1. Crazy 8s & Brainstorming -->
+          <div class="grid md:grid-cols-2 gap-8 items-start">
+            <!-- Keterangan -->
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <span class="font-display text-4xl text-[#0A4D3C]">01</span>
+                <h3 class="font-display text-3xl text-black tracking-wider">
+                  CRAZY 8'S &<br />BRAINSTORMING
+                </h3>
+              </div>
+
+              <p class="font-body text-sm text-gray-800 leading-relaxed mb-5">
+                Setiap anggota tim menggambar 8 ide dalam 8 menit. Teknik ini
+                memaksa berpikir cepat dan keluar dari solusi konvensional —
+                menghasilkan banyak arah solusi sekaligus untuk masalah
+                pengiriman 24 jam.
+              </p>
+
+              <a
+                href="https://www.figma.com/design/wvOB9nhqAOIYyQeCeEIs42/Untitled"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#0A4D3C] text-[#F5C800] px-5 py-2 text-sm inline-block"
+              >
+                🔗 LIHAT DI FIGMA ↗
+              </a>
+            </div>
+
+            <!-- Embed Figma -->
+            <div
+              class="bg-[#1e1e2e] relative overflow-hidden rounded-xl border-4 border-black shadow-[8px_8px_0px_#000]"
+              style="height: 500px"
+            >
+              <div
+                class="absolute top-0 left-0 right-0 bg-[#2c2c3e] h-10 flex items-center px-4 justify-between z-10 border-b border-gray-700"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+
+                  <span class="font-mono text-xs text-gray-400 ml-3">
+                    Crazy 8's.fig
+                  </span>
+                </div>
+
+                <span class="font-mono text-xs text-[#F5C800]">
+                  ● Ideation
+                </span>
+              </div>
+
+              <iframe
+                class="absolute left-0 w-full"
+                style="top: 40px; height: calc(100% - 40px); border: none"
+                src="https://embed.figma.com/design/wvOB9nhqAOIYyQeCeEIs42/Untitled?node-id=480-12&embed-host=share"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="border-t-2 border-black border-dashed opacity-30"></div>
+
+          <!-- 2. User Flow -->
+          <div class="grid md:grid-cols-2 gap-8 items-start">
+            <!-- FIGMA -->
+            <div
+              class="order-2 md:order-1 bg-[#1e1e2e] relative overflow-hidden rounded-xl border-4 border-black shadow-[8px_8px_0px_#000]"
+              style="height: 500px"
+            >
+              <div
+                class="absolute top-0 left-0 right-0 bg-[#2c2c3e] h-10 flex items-center px-4 justify-between z-10 border-b border-gray-700"
+              >
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                  <div class="w-3 h-3 rounded-full bg-green-400"></div>
+
+                  <span class="font-mono text-xs text-gray-400 ml-3">
+                    User Flow.fig
+                  </span>
+                </div>
+
+                <span class="font-mono text-xs text-[#F5C800]">
+                  ● Flow Mapping
+                </span>
+              </div>
+
+              <iframe
+                class="absolute left-0 w-full"
+                style="top: 40px; height: calc(100% - 40px); border: none"
+                src="https://embed.figma.com/design/wvOB9nhqAOIYyQeCeEIs42/Untitled?node-id=114-2&embed-host=share"
+                allowfullscreen
+              ></iframe>
+            </div>
+
+            <!-- KETERANGAN -->
+            <div class="order-1 md:order-2">
+              <div class="flex items-center gap-3 mb-3">
+                <span class="font-display text-4xl text-[#0A4D3C]">02</span>
+                <h3 class="font-display text-3xl text-black tracking-wider">
+                  USER FLOW
+                </h3>
+              </div>
+
+              <p class="font-body text-sm text-gray-800 leading-relaxed mb-5">
+                Setelah ide terkumpul, kami memetakan alur pengguna dari awal
+                hingga akhir — mulai membuka aplikasi, memilih kurir yang
+                tersedia, mengisi detail pengiriman, hingga konfirmasi order.
+                User flow memastikan tidak ada langkah yang berlebihan.
+              </p>
+
+              <a
+                href="https://www.figma.com/design/wvOB9nhqAOIYyQeCeEIs42/Untitled?node-id=114-2"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#0A4D3C] text-[#F5C800] px-5 py-2 text-sm inline-block"
+              >
+                🔗 LIHAT DI FIGMA ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="border-t-2 border-black border-dashed opacity-30"></div>
+
+          <!-- 3. UI Kit & Design System -->
+          <div class="grid md:grid-cols-2 gap-8 items-start">
+            <div>
+              <div class="flex items-center gap-3 mb-3">
+                <span class="font-display text-4xl text-[#0A4D3C]">03</span>
+                <h3 class="font-display text-3xl text-black tracking-wider">
+                  UI KIT &<br />DESIGN SYSTEM
+                </h3>
+              </div>
+              <p class="font-body text-sm text-gray-800 leading-relaxed mb-5">
+                Sebelum masuk ke prototype, kami menyusun Design System yang
+                mencakup palet warna, tipografi, komponen dasar (tombol, input,
+                card), dan iconografi. Konsistensi visual ini memastikan
+                tampilan aplikasi kohesif di semua layar.
+              </p>
+              <a
+                href="https://www.figma.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#0A4D3C] text-[#F5C800] px-5 py-2 text-sm inline-block"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <path
+                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                  />
+                  <path
+                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                  />
+                </svg>
+                LIHAT DI FIGMA ↗</a
+              >
+            </div>
+            <div class="figma-wrapper">
+              <div
+                class="bg-[#1e1e2e] relative overflow-hidden rounded-xl border-4 border-black shadow-[8px_8px_0px_#000]"
+                style="height: 500px"
+              >
+                <div
+                  class="absolute top-0 left-0 right-0 bg-[#2c2c3e] h-10 flex items-center px-4 justify-between z-10 border-b border-gray-700"
+                >
+                  <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+
+                    <span class="font-mono text-xs text-gray-400 ml-3">
+                      Design System.fig
+                    </span>
+                  </div>
+
+                  <span class="font-mono text-xs text-[#F5C800]">
+                    ● UI Kit
+                  </span>
+                </div>
+
+                <iframe
+                  class="absolute left-0 w-full"
+                  style="top: 40px; height: calc(100% - 40px); border: none"
+                  src="https://embed.figma.com/design/veGFstotpa1scL7CaVLg2B/Untitled?node-id=166-2&embed-host=share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     04 — PROTOTYPE
+════════════════════════════════════════ -->
+    <section
+      id="prototype"
+      class="py-20 px-4 md:px-8 bg-[#0A4D3C] border-b-4 border-black bg-dots"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div class="section-label mb-4">04 Prototype</div>
+
+        <h2
+          class="font-display text-[clamp(3.5rem,10vw,6rem)] leading-none text-black mb-4"
+        >
+          BIKIN<br />NYATA.
+        </h2>
+
+        <p class="font-body text-lg text-white max-w-2xl mb-10">
+          Dari wireframe ke high-fidelity prototype. Kami membangun
+          <strong>3 iterasi</strong> prototype yang berfokus pada kecepatan
+          pemesanan, transparansi biaya, dan kemudahan layanan 24 jam.
+        </p>
+
+        <div class="gap-8 items-start mb-12">
+          <div class="lg:col-span-2">
+            <div class="figma-wrapper">
+              <div
+                class="bg-[#1e1e2e] relative overflow-hidden rounded-xl border-4 border-black shadow-[8px_8px_0px_#000]"
+                style="height: 700px"
+              >
+                <!-- Header Window -->
+                <div
+                  class="absolute top-0 left-0 right-0 bg-[#2c2c3e] h-10 flex items-center px-4 justify-between z-10 border-b border-gray-700"
+                >
+                  <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+
+                    <span class="font-mono text-xs text-gray-400 ml-3">
+                      Boedhal HiFi Prototype
+                    </span>
+                  </div>
+
+                  <span class="font-mono text-xs text-[#F5C800]">
+                    ● Prototype Mode
+                  </span>
+                </div>
+
+                <!-- Figma Embed -->
+                <iframe
+                  class="absolute left-0 w-full"
+                  style="top: 40px; height: calc(100% - 40px); border: none"
+                  src="https://embed.figma.com/proto/veGFstotpa1scL7CaVLg2B/Untitled?node-id=4-929&p=f&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=32%3A189&show-proto-sidebar=1&embed-host=share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-wrap gap-3 mt-5">
+              <a
+                href="https://embed.figma.com/proto/veGFstotpa1scL7CaVLg2B/Untitled?node-id=4-929&p=f&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=32%3A189"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#0A4D3C] text-[#F5C800] px-6 py-3 text-lg inline-block"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+                COBA PROTOTYPE INTERAKTIF
+              </a>
+
+              <a
+                href="https://www.figma.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#F5C800] text-[#0A4D3C] px-6 py-3 text-lg inline-block"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <path
+                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                  />
+                  <path
+                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                  />
+                </svg>
+                LIHAT DI FIGMA
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     05 — TESTING
+════════════════════════════════════════ -->
+    <section
+      id="testing"
+      class="py-20 px-4 md:px-8 bg-[#fafafa] border-b-4 border-black"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div
+          class="section-label mb-4"
+          style="border-color: #0a4d3c; color: #0a4d3c; background: #f5c800"
+        >
+          05 — Testing
+        </div>
+        <h2
+          class="font-display text-[clamp(3.5rem,10vw,6rem)] leading-none text-black mb-4"
+        >
+          UJIANNYA<br />TIBA.
+        </h2>
+        <p class="font-body text-lg text-black max-w-2xl mb-12">
+          Kami melakukan <strong>Usability Testing</strong> dengan partisipan
+          yang aktif menggunakan layanan pengiriman barang, menggunakan metode
+          <strong>Think Aloud Protocol</strong> dan
+          <strong>System Usability Scale (SUS)</strong>.
+        </p>
+
+        <!-- Testing Evidence -->
+        <div class="grid lg:grid-cols-2 gap-8 mb-14 items-center">
+          <!-- Foto + Biodata Penguji -->
+          <div>
+            <!-- Foto -->
+            <div class="grid grid-cols-2 gap-0 mb-5">
+              <div
+                class="overflow-hidden border-4 border-black border-r-0 bg-white shadow-brutal"
+              >
+                <img
+                  src="gambar/habibi1.jpeg"
+                  alt="Habibi Testing"
+                  class="w-full h-[420px] object-cover"
+                />
+              </div>
+
+              <div
+                class="overflow-hidden border-4 border-black bg-white shadow-brutal"
+              >
+                <img
+                  src="gambar/habibi2.jpeg"
+                  alt="Habibi Testing"
+                  class="w-full h-[420px] object-cover"
+                />
+              </div>
+            </div>
+
+            <!-- Biodata -->
+            <div class="card-brutal bg-white p-6">
+              <h3 class="font-display text-2xl text-[#0A4D3C]">
+                Habibi Zakly Khairullah
+              </h3>
+
+              <p class="font-mono text-sm text-gray-600 mt-1">
+                Mahasiswa, 19 Tahun
+              </p>
+
+              <div class="w-16 h-1 bg-[#F5C800] border border-black my-4"></div>
+
+              <p class="italic text-gray-700">
+                "Jarang menggunakan aplikasi transportasi online"
+              </p>
+            </div>
+          </div>
+
+          <!-- Informasi Testing -->
+          <div class="card-brutal bg-white p-8">
+            <div
+              class="inline-block border-2 border-black px-3 py-1 font-mono text-xs font-bold mb-4"
+            >
+              TESTING SESSION
+            </div>
+
+            <h3 class="font-display text-3xl text-[#0A4D3C] mb-4">
+              Validasi Bersama Pengguna
+            </h3>
+
+            <p class="font-body text-black mb-4 leading-relaxed">
+              Pengujian dilakukan secara langsung menggunakan prototype Boedhal.
+              Partisipan diminta menyelesaikan beberapa skenario pengiriman
+              barang sambil menjelaskan apa yang mereka pikirkan selama
+              menggunakan aplikasi.
+            </p>
+
+            <ul class="space-y-3 font-body">
+              <li><strong>Metode:</strong> Think Aloud Protocol</li>
+              <li><strong>Teknik:</strong> Task-based Testing</li>
+              <li>
+                <strong>Fokus:</strong> Kemudahan pemesanan dan pelacakan barang
+              </li>
+              <li><strong>Perangkat:</strong> Smartphone Android</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Feedback Cards -->
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+          <!-- Positive -->
+          <div>
+            <h3 class="font-display text-2xl text-black mb-4 tracking-wider">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              YANG WORKS
+            </h3>
+            <div class="space-y-3">
+              <div class="card-brutal bg-white p-4">
+                <p class="font-body text-sm">
+                  "Fitur simpan alamat sangat membantu! Saya tidak perlu isi
+                  ulang alamat pelanggan langganan saya."
+                </p>
+                <p class="font-mono text-xs text-[#0F6E56] mt-2 font-bold">
+                  — Partisipan #2, penjual online
+                </p>
+              </div>
+              <div class="card-brutal bg-white p-4">
+                <p class="font-body text-sm">
+                  "Suka banget tampilan kurir yang online langsung tahu siapa
+                  yang bisa dipakai malam ini tanpa tanya-tanya dulu."
+                </p>
+                <p class="font-mono text-xs text-[#0F6E56] mt-2 font-bold">
+                  — Partisipan #5, reseller
+                </p>
+              </div>
+              <div class="card-brutal bg-white p-4">
+                <p class="font-body text-sm">
+                  "Estimasi biaya langsung muncul sebelum konfirmasi ini yang
+                  paling saya suka, nggak ada biaya kejutan."
+                </p>
+                <p class="font-mono text-xs text-[#0F6E56] mt-2 font-bold">
+                  Partisipan #1, mahasiswa
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Areas to Improve -->
+          <div>
+            <h3 class="font-display text-2xl text-black mb-4 tracking-wider">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                style="
+                  display: inline-block;
+                  vertical-align: middle;
+                  width: 1em;
+                  height: 1em;
+                "
+              >
+                <path
+                  d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+              YANG PERLU DIPERBAIKI
+            </h3>
+            <div class="space-y-3">
+              <div class="card-brutal bg-[#0A4D3C] p-4">
+                <p class="font-body text-sm text-white">
+                  "Peta lacak kiriman agak lambat loading-nya, sempat mikir
+                  aplikasinya hang."
+                </p>
+                <p class="font-mono text-xs text-[#F5C800] mt-2 font-bold">
+                  → PERBAIKAN: Tambah skeleton loading & indikator progress
+                </p>
+              </div>
+              <div class="card-brutal bg-[#0A4D3C] p-4">
+                <p class="font-body text-sm text-white">
+                  "Tombol 'Jadwal Kirim' tersembunyi, saya hampir tidak
+                  menemukan fitur ini sama sekali."
+                </p>
+                <p class="font-mono text-xs text-[#F5C800] mt-2 font-bold">
+                  → PERBAIKAN: Angkat ke halaman utama pemesanan
+                </p>
+              </div>
+              <div class="card-brutal bg-[#0A4D3C] p-4">
+                <p class="font-body text-sm text-white">
+                  "Informasi jangkauan antar kota tidak jelas, saya tidak yakin
+                  apakah bisa kirim ke luar kota."
+                </p>
+                <p class="font-mono text-xs text-[#F5C800] mt-2 font-bold">
+                  → PERBAIKAN: Tambah halaman cek jangkauan wilayah
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     06 — CREATOR PROFILE
+════════════════════════════════════════ -->
+    <section
+      id="creator"
+      class="py-20 px-4 md:px-8 bg-[#0A4D3C] border-b-4 border-[#F5C800]"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div
+          class="section-label mb-4"
+          style="border-color: #f5c800; color: #f5c800; background: #0a4d3c"
+        >
+          06 Creator
+        </div>
+        <h2
+          class="font-display text-[clamp(3rem,9vw,5.5rem)] leading-none text-white mb-12"
+        >
+          YANG<br />BIKIN INI.
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+          <!-- Left: Profile Card -->
+          <div
+            class="persona-card overflow-hidden max-w-md"
+            style="border-color: #f5c800; box-shadow: 10px 10px 0 #0a0a0a"
+          >
+            <!-- Avatar Header -->
+            <div class="bg-[#F5C800] p-6 flex items-center gap-5">
+              <div
+                class="w-[110px] h-[110px] md:w-[140px] md:h-[140px] rounded-full border-4 border-black overflow-hidden shadow-brutal flex-shrink-0"
+              >
+                <img
+                  src="gambar/pp.png"
+                  alt="Foto Deta"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <p class="font-display text-3xl text-black">Deta Aprilka</p>
+                <p class="font-mono text-xs text-[#0A4D3C] font-bold mt-1">
+                  UI/UX Designer & Researcher
+                </p>
+                <div class="flex gap-2 mt-2 flex-wrap">
+                  <span
+                    class="border-brutal bg-[#0A4D3C] text-white font-mono text-xs px-2 py-0.5"
+                    >Figma</span
+                  >
+                  <span
+                    class="border-brutal bg-[#0F6E56] text-white font-mono text-xs px-2 py-0.5"
+                    >UX Research</span
+                  >
+                  <span
+                    class="border-brutal bg-[#EF9F27] text-[#0A4D3C] font-mono text-xs px-2 py-0.5"
+                    >Prototyping</span
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- Bio -->
+            <div class="bg-white p-6">
+              <p class="font-body text-sm leading-relaxed text-gray-700 mb-4">
+                Seorang desainer yang percaya bahwa
+                <strong
+                  >desain yang baik adalah desain yang tidak perlu
+                  dijelaskan</strong
+                >. Passion di intersection antara psikologi pengguna dan visual
+                design.
+              </p>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2 font-mono text-xs">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#F5C800"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="
+                      display: inline-block;
+                      vertical-align: middle;
+                      width: 1em;
+                      height: 1em;
+                    "
+                  >
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <span>Pacitan, Jawa Timur, Indonesia</span>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-xs">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#F5C800"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    style="
+                      display: inline-block;
+                      vertical-align: middle;
+                      width: 1em;
+                      height: 1em;
+                    "
+                  >
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                  </svg>
+                  <span>[Politeknik Negeri Madiun / Teknologi Informasi]</span>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-xs">
+                  <span
+                    class="text-[#F5C800]"
+                    style="font-size: 1.1em; line-height: 1"
+                    >✦</span
+                  >
+                  <span>3+ Proyek UX Case Study</span>
+                </div>
+              </div>
+            </div>
+            <!-- Contact Bar -->
+            <div class="bg-[#0A4D3C] p-4 flex flex-wrap gap-2">
+              <a
+                href="mailto:aprilkadeta@gmail.com"
+                class="btn-brutal bg-[#F5C800] text-[#0A4D3C] text-xs px-3 py-1.5 inline-block"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                  />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                EMAIL
+              </a>
+              <a
+                href="https://www.linkedin.com/in/deta-aprilka-dario-karnavaro-61a265381/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#0F6E56] text-white text-xs px-3 py-1.5 inline-block"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <rect x="2" y="7" width="20" height="14" rx="2" />
+                  <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                </svg>
+                LINKEDIN</a
+              >
+              <a
+                href="https://www.instagram.com/dettkrnvvv/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-white text-[#0A4D3C] text-xs px-3 py-1.5 inline-block"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                  "
+                >
+                  <path
+                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+                  />
+                  <circle cx="12" cy="13" r="4" />
+                </svg>
+                INSTAGRAM</a
+              >
+              <a
+                href="https://github.com/DetaADK"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-brutal bg-[#F5C800] text-[#0A4D3C] text-xs px-3 py-1.5 inline-block"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  style="
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 1em;
+                    height: 1em;
+                    margin-right: 4px;
+                  "
+                >
+                  <path
+                    d="M12 2C6.48 2 2 6.58 2 12.22c0 4.5 2.87 8.32 6.84 9.67.5.1.68-.22.68-.49 0-.24-.01-1.05-.01-1.9-2.78.62-3.37-1.2-3.37-1.2-.46-1.19-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.05 0-1.11.39-2.01 1.03-2.72-.1-.26-.45-1.31.1-2.73 0 0 .84-.28 2.75 1.04A9.3 9.3 0 0 1 12 6.84c.85 0 1.7.12 2.5.35 1.91-1.32 2.75-1.04 2.75-1.04.55 1.42.2 2.47.1 2.73.64.71 1.03 1.61 1.03 2.72 0 3.92-2.34 4.79-4.57 5.05.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.49A10.24 10.24 0 0 0 22 12.22C22 6.58 17.52 2 12 2z"
+                  />
+                </svg>
+                GITHUB
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Other Projects & Skills -->
+          <div>
+            <h3 class="font-display text-3xl text-white mb-6 tracking-wider">
+              SKILL SET
+            </h3>
+            <div class="space-y-3 mb-10">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-mono text-xs text-[#F5C800] font-bold"
+                    >USER RESEARCH</span
+                  >
+                  <span class="font-mono text-xs text-gray-400">90%</span>
+                </div>
+                <div
+                  class="h-3 border-2 border-[#F5C800] bg-[#0A4D3C] overflow-hidden"
+                >
+                  <div class="h-full bg-[#F5C800]" style="width: 90%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-mono text-xs text-[#EF9F27] font-bold"
+                    >FIGMA / PROTOTYPING</span
+                  >
+                  <span class="font-mono text-xs text-gray-400">85%</span>
+                </div>
+                <div
+                  class="h-3 border-2 border-[#EF9F27] bg-[#0A4D3C] overflow-hidden"
+                >
+                  <div class="h-full bg-[#EF9F27]" style="width: 85%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-mono text-xs text-[#F5C800] font-bold"
+                    >VISUAL DESIGN</span
+                  >
+                  <span class="font-mono text-xs text-gray-400">80%</span>
+                </div>
+                <div
+                  class="h-3 border-2 border-[#F5C800] bg-[#0A4D3C] overflow-hidden"
+                >
+                  <div class="h-full bg-[#F5C800]" style="width: 80%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-mono text-xs text-white font-bold"
+                    >USABILITY TESTING</span
+                  >
+                  <span class="font-mono text-xs text-gray-400">75%</span>
+                </div>
+                <div
+                  class="h-3 border-2 border-white bg-[#0A4D3C] overflow-hidden"
+                >
+                  <div class="h-full bg-white" style="width: 75%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+    <footer class="bg-[#fafafa] border-t-4 border-black py-8 px-4 md:px-8">
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4"
+      >
+        <div>
+          <p class="font-display text-4xl tracking-widest">BOEDHAL</p>
+          <p class="font-mono text-xs text-gray-700">
+            UX Case Study — Aplikasi Pengiriman Barang 24 Jam
+          </p>
+        </div>
+        <div class="text-center">
+          <p class="font-mono text-xs text-gray-700">
+            Built with using Figma & Design Thinking
+          </p>
+          <p class="font-mono text-xs text-gray-600 mt-1">
+            2025 — Portfolio Website
+          </p>
+        </div>
+        <a
+          href="#hero"
+          class="btn-brutal bg-[#0A4D3C] text-[#F5C800] px-6 py-2 text-sm inline-block"
+          >BACK TO TOP ↑</a
+        >
+      </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+    <script>
+      /* Scroll Progress Bar */
+      window.addEventListener("scroll", () => {
+        const scrollTop = window.scrollY;
+        const docHeight =
+          document.documentElement.scrollHeight - window.innerHeight;
+        const pct = (scrollTop / docHeight) * 100;
+        document.getElementById("progress-bar").style.width = pct + "%";
+      });
+
+      /* Mobile Menu Toggle */
+      const hamburger = document.getElementById("hamburger");
+      const mobileMenu = document.getElementById("mobile-menu");
+      hamburger.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
+      });
+      function closeMobile() {
+        mobileMenu.classList.remove("open");
+      }
+
+      /* Entrance Animation on scroll */
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+
+      document.querySelectorAll("section").forEach((section) => {
+        section.style.opacity = "0";
+        section.style.transform = "translateY(30px)";
+        section.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+        observer.observe(section);
+      });
+
+      /* Fix hero section visibility immediately */
+      document.querySelector("#hero").style.opacity = "1";
+      document.querySelector("#hero").style.transform = "none";
+
+      const cards = document.querySelectorAll(".phone-card");
+
+      let positions = ["left", "center", "right"];
+
+      function renderCards() {
+        cards.forEach((card, index) => {
+          card.classList.remove("left", "center", "right");
+          card.classList.add(positions[index]);
+        });
+      }
+
+      renderCards();
+
+      cards.forEach((card, index) => {
+        card.addEventListener("click", () => {
+          if (positions[index] === "center") return;
+
+          const centerIndex = positions.indexOf("center");
+
+          [positions[index], positions[centerIndex]] = [
+            positions[centerIndex],
+            positions[index],
+          ];
+
+          renderCards();
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var firstVisitKey = "boedhalFirstVisit";
+        var elements = document.querySelectorAll(".animate-slide-up");
+        if (!localStorage.getItem(firstVisitKey)) {
+          elements.forEach(function (el, index) {
+            el.style.transitionDelay = index * 120 + "ms";
+            requestAnimationFrame(function () {
+              el.classList.add("animate-visible");
+            });
+          });
+          localStorage.setItem(firstVisitKey, "true");
+        } else {
+          elements.forEach(function (el) {
+            el.classList.add("instant-visible");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
